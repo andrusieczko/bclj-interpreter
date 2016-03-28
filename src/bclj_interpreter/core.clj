@@ -11,7 +11,7 @@
                  (conj array 0))]
     (update-in array [pointer] f)))
 
-(defn- process
+(defn process
   [program]
   (loop [array [0]
          pointer 0
@@ -21,13 +21,14 @@
          output []]
      (if-not (seq program)
       {:array array
-       :output output}
+       :output (clojure.string/join output)}
       (case (str (first program))
         "+" (recur (update-array array pointer inc) pointer (rest program) loop-start loop-end output)
         "-" (recur (update-array array pointer dec) pointer (rest program) loop-start loop-end output)
         ">" (recur (update-array array (inc pointer) identity) (inc pointer) (rest program) loop-start loop-end output)
         "<" (recur (update-array array (dec pointer) identity) (dec pointer) (rest program) loop-start loop-end output)
         "." (recur array pointer (rest program) loop-start loop-end (conj output (char (get-in array [pointer]))))
+        "*" (recur array pointer (rest program) loop-start loop-end (conj output (get-in array [pointer])))
         "[" (if (zero? (get-in array [pointer]))
                    (recur array pointer (peek loop-end) loop-start (pop loop-end) output)
                    (recur array pointer (rest program) (conj loop-start program) loop-start output))
@@ -38,7 +39,7 @@
   [& args]
   (let [result (-> (read-file "resources/program1.b")
                    (process))]
-    (prn (clojure.string/join (:output result)))
+    (prn (:output result))
     (prn)
     (prn "Memory:")
     (prn (:array result))))
