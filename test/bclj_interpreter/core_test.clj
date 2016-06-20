@@ -54,24 +54,6 @@
                  +++>++++>++++<<<<<<<<<<<\n-]>>-->++>+>>->>+++>++>++<
                  <<<<<<<<<<-\n]>>--.>-.>-.>++.>---.>-.>+.>.>+.>-.>+."
         {:keys [array output]} (process program)]
+    (prn program)
     (is (= [0 0 73 39 109 32 97 119 101 115 111 109 101] array))
     (is (= "I'm awesome" output))))
-
-
-(defn generate
-  [x]
-  (lazy-seq
-    (cons
-      x
-      (generate (if (> x 3) nil (inc x))))))
-
-
-(defn f
-  []
-  (generate 1))
-
-(deftest kdjhfsd
-  (prn (take 5 (f))))
-
-(deftest kdjshfsd
-  (prn (process "++*")))
