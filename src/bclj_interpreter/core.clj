@@ -1,9 +1,5 @@
 (ns bclj-interpreter.core)
 
-(defn- read-file
-  [file-name]
-  (slurp file-name))
-
 (defn- update-array
   [array pointer f]
   (let [array (if (get-in array [pointer])
@@ -37,7 +33,7 @@
 
 (defn -main
   [& args]
-  (let [result (-> (read-file "resources/program1.b")
+  (let [result (-> (slurp "resources/program1.b")
                    (process))]
     (prn (:output result))
     (prn)
